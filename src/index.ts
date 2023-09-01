@@ -78,7 +78,8 @@ console.log( `anyType is ${anyType}`);
 
 ////////////////////////////////////////////////////////////////////////
 
-console.log("There is no error, when you reassign the value of a variable with type unknown.  It can be assigned to a value with a different type.");
+console.log("There is no error, when you reassign the value of a variable " +
+  "with type 'unknown'.  It can be assigned to a value with a different type.");
 let unknownType: unknown = 2;
 console.log( `unknownType is ${unknownType}`);
 unknownType = true;
@@ -90,6 +91,16 @@ console.log("(typeof unknownType === 'string') is",
 console.log("(typeof unknownType === 'object') is",
  (typeof unknownType === 'object'));
 
+
+////////////////////////////////////////////////////////////////////////
+
+
+// No error, while declaring.
+let foo: never;
+
+// This results in an error:
+// error TS2322: Type 'string' is not assignable to type 'never'.
+let goo: never = "goo";
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -236,6 +247,9 @@ console.log(safeInfo);
 // error TS2339: Property 'push' does not exist on type 'readonly [string, number, boolean]'.
 safeInfo.push('Adding on additional info');
 
+
+
+// Named tuple
 const mytime: [hour: number, minute: number, ampm: string] = [ 11, 23, "am"];
 
 
@@ -257,3 +271,36 @@ console.log(`The time is ${ hour}:${paddedMinutes}${ampm}.`);
 const [hr, minutes, amPm] = mytime;
 paddedMinutes = ((minutes < 10) ? "0" : "") + minutes;
 console.log(`The time is ${ hr}:${paddedMinutes}${amPm}.`);
+
+////////////////////////////////////////////////////////////////////////
+
+let clothing: readonly string[] = ["shirt", "pants", "socks"];
+
+// This results in an error:
+// error TS2542: Index signature in type 'readonly string[]' only permits reading.
+clothing[2] = "shoes";
+
+// This results in an error:
+clothing.pop();
+
+////////////////////////////////////////////////////////////////////////
+
+// Index Signatures
+// when you don't know the name of the object properties in advance
+
+const groceryList: { [index: string]: number } = {};
+groceryList.apples = 3;
+groceryList.oranges = 2;
+groceryList.lime = 1;
+console.log("groceryList");
+console.log(groceryList);
+
+////////////////////////////////////////////////////////////////////////
+
+// Enum
+
+enum numberWords {
+  Zero,
+  One,
+  Two
+}
