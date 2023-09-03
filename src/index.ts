@@ -276,9 +276,9 @@ const [hr, minutes, amPm] = mytime;
 paddedMinutes = ((minutes < 10) ? "0" : "") + minutes;
 console.log(`The time is ${ hr}:${paddedMinutes}${amPm}.`);
 
-type Person = [string, number, string?];
+type PersonA = [string, number, string?];
 
-const people: Person[] = [
+const people: PersonA[] = [
   ["Ralph", 3, "blue"],
   ["Steve", 7],
   ["Thomas", 1, "yellow"],
@@ -397,3 +397,116 @@ console.log("Want 1.", oneMonthLater(12));
 console.log("Want Feb.", oneMonthLater("Jan"));
 console.log("Want Dec.", oneMonthLater("Nov"));
 console.log("Want Jan.", oneMonthLater("Dec"));
+
+////////////////////////////////////////////////////////////////////////
+
+// Casting
+
+let e: unknown = "happy";
+
+// This results in an error:
+// error TS18046: 'e' is of type 'unknown'.
+console.log(e.length);
+
+console.log((e as string).length);
+
+// Even though e is declared as 'unknown',
+// the type becomes string, because e is set to "happy".
+// So when you set the value, it overrides the 'unknown' declaration.
+console.log("typeof e =", typeof e);  // string
+
+
+let playedFlag: unknown = true;
+
+// Does not generate error.
+// Using the cast 'as string' prevents a TypeScript error.
+// The boolean is cast 'as string', so then you can type .length
+// without generating an error.
+//
+// But the printed result is 'undefined',
+// because the actual type is boolean,
+// and you can't get the length of a boolean.
+console.log((playedFlag as string).length);
+
+console.log("typeof playedFlag =", typeof playedFlag);  // boolean
+
+playedFlag = !playedFlag;
+console.log(`playedFlag = ${playedFlag}`);
+
+console.log( "playedFlag + 1");
+
+// This results in an error:
+// error TS18046: 'playedFlag' is of type 'unknown'.
+console.log( playedFlag + 1);  // unknown(false) + 1 => 1
+
+console.log( "<number>playedFlag + 1");
+console.log( <number>playedFlag + 1);  // 1
+
+playedFlag = !playedFlag;
+console.log(`playedFlag = ${playedFlag}`);
+
+console.log( "playedFlag + 1");
+
+// This results in an error:
+// error TS18046: 'playedFlag' is of type 'unknown'.
+console.log( playedFlag + 1);  // unknown(true) + 1 => 2
+
+console.log( "<number>playedFlag + 1");
+console.log( <number>playedFlag + 1);  // 2
+
+
+////////////////////////////////////////////////////////////////////////
+
+// Function
+
+interface Person {
+  name: string;
+  phone: string;
+  address: string;
+  ownsHome?: boolean;  /* optional property */
+}
+
+function updatePerson( person: Person, phone: string, address?: string, ownsHome = false): void {
+  if (phone)
+    person.phone = phone;
+  if (address)
+    person.address = address;
+
+  // uses default, if not passed as an argument
+  person.ownsHome = ownsHome;
+}
+
+const ben: Person = {
+  name: "Ben Anderson",
+  phone: "111-111-1111",
+  address: "1 Alpha St",
+}
+
+console.log("Ben", ben);
+
+updatePerson( ben, "222-111-1111");
+console.log("Ben", ben);
+
+updatePerson( ben, "222-111-1111", "1 Beta Ave");
+console.log("Ben", ben);
+
+updatePerson( ben, "222-111-1111", "1 Gamma Place", true);
+console.log("Ben", ben);
+
+
+////////////////////////////////////////////////////////////////////////
+
+type PrintItem = string | number | boolean;
+
+function printMe( s1: PrintItem, ...rest: PrintItem[]) : void {
+  console.log(s1);
+  rest.forEach((a) => console.log(a));
+}
+
+printMe('Insect');
+printMe('Penguin', 2);
+printMe('Owl', 3, true);
+
+////////////////////////////////////////////////////////////////////////
+
+//
