@@ -25,7 +25,7 @@ let startYear: number = 1980;
 
 // This results in an error:
 // error TS2322: Type 'string' is not assignable to type 'number'.
-//startYear = "mistake";
+startYear = "mistake";
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -50,9 +50,9 @@ console.log( `unknownType is ${unknownType}`);
 unknownType = "pen";
 console.log( `unknownType is ${unknownType}`);
 console.log("(typeof unknownType === 'string') is",
- (typeof unknownType === 'string'));
+ (typeof unknownType === 'string'));   // true
 console.log("(typeof unknownType === 'object') is",
- (typeof unknownType === 'object'));
+ (typeof unknownType === 'object'));   // false
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -81,5 +81,9 @@ ages.push('wrong');
 
 // array of 'unknown' types
 const mixed: unknown[] = [ 4, "four", false];
+console.log("mixed array", mixed);
+
+mixed.push("ok");
+mixed.push(true);
 console.log("mixed array", mixed);
 
